@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from auction.tasks import set_lot_as_unavailable
+from .tasks import set_lot_as_unavailable
 
 
 class Lot(models.Model):
@@ -23,10 +23,7 @@ class Lot(models.Model):
         super(Lot, self).save(*args, **kwargs)
 
         if create_task:
-            from .serializers import AllFieldLotSerializer
-            serializer = AllFieldLotSerializer(self)
-            serialized_lot = serializer.data
-            set_lot_as_unavailable.apply_async(args=[serialized_lot], eta=self.end_time)
+            set_lot_as_unavailable.apply_async(args=[self.pk], eta=self.end_time)
 
     def __str__(self):
         return self.name

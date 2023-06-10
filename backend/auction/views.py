@@ -1,11 +1,9 @@
-from django.shortcuts import render
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
 from rest_framework import generics
+from rest_framework.views import APIView
 from .models import Lot
-from django.contrib.auth.models import User
 from .serializers import LotSerializer, BuyersLotsSerializer, NewBetSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 
 
@@ -30,7 +28,7 @@ class LotAPIDestroy(generics.RetrieveDestroyAPIView):
 class NewBetInLotUpdate(generics.RetrieveUpdateAPIView):
     queryset = Lot.objects.filter(is_available=True)
     serializer_class = NewBetSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticated,)
 
     def put(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -39,7 +37,12 @@ class NewBetInLotUpdate(generics.RetrieveUpdateAPIView):
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        instance.current_price += serializer.validated_data.get('bet', 50)
+        bet = serializer.validated_data.get('bet', 50)
+
+        if not bet or bet < 50:
+            bet = 50
+
+        instance.current_price += bet
 
         instance.current_buyer = request.user
         instance.save()
@@ -56,3 +59,12 @@ class BuyersLotsAPIList(generics.ListCreateAPIView):
         return queryset
 
 
+class UserInfoView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        user = request.user
+        data = {
+            'username': user.username,
+        }
+        return Response(data)

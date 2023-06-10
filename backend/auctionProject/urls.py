@@ -3,7 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from django.urls import path, include, re_path
-from auction.views import ActiveLotsAPIList, LotAPIUpdate, LotAPIDestroy, NewBetInLotUpdate, BuyersLotsAPIList
+from auction.views import ActiveLotsAPIList, LotAPIUpdate, LotAPIDestroy, NewBetInLotUpdate, BuyersLotsAPIList, UserInfoView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 urlpatterns = [
@@ -13,7 +13,7 @@ urlpatterns = [
     path('api/delete-lot/<int:pk>/', LotAPIDestroy.as_view()),
     path('api/lot/<int:pk>/bet/', NewBetInLotUpdate.as_view()),
     path('api/buyerslots/', BuyersLotsAPIList.as_view()),
-    #path('api/user-info/<int:pk>', ),
+    path('api/userInfo/', UserInfoView.as_view()),
 
     path('api/register/', include('djoser.urls')),
 

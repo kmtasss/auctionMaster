@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'auction.apps.AuctionConfig',
     'corsheaders',
-    'celery',
     'rest_framework',
     'djoser',
 ]
@@ -158,7 +157,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False,
@@ -188,9 +187,12 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_TIMEZONE = 'Asia/Yekaterinburg'
-CELERY_IMPORTS = ('auction.tasks',)
-CELERY_APP = 'celery_auction:app'
+CELERY_TASK_TRACK_STARTED = True
+CELERY_BROKER_URL = 'redis://127.0.0.1:16379/0'
+#CELERY_RESULT_BACKEND = 'django-db'
+#CELERY_CACHE_BACKEND = 'django-cache'
+
+
+#CELERY_IMPORTS = ('auction.tasks',)
+#CELERY_APP = 'celery:app'

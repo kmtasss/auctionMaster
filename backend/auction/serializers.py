@@ -18,12 +18,6 @@ class LotSerializer(serializers.ModelSerializer):
         return None
 
 
-class AllFieldLotSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Lot
-        fields = '__all__'
-
-
 class NewBetSerializer(serializers.Serializer):
     bet = serializers.IntegerField(required=False)
 
