@@ -1,12 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from .tasks import set_lot_as_unavailable
+from auctionProject.yandex_s3_storage import ClientDocsStorage
 
 
 class Lot(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=255, blank=True)
-    image = models.ImageField(upload_to='lot_pics', null=True, blank=True)
+    image = models.FileField(storage=ClientDocsStorage(), null=True, blank=True)
     first_price = models.IntegerField()
     current_price = models.IntegerField()
     creation_time = models.DateTimeField(auto_now_add=True)

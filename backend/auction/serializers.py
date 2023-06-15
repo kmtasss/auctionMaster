@@ -12,6 +12,11 @@ class LotSerializer(serializers.ModelSerializer):
         model = Lot
         exclude = ('is_available',)
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['creator'] = instance.creator.username
+        return data
+
     def get_current_buyer(self, obj):
         if obj.current_buyer:
             return obj.current_buyer.username
