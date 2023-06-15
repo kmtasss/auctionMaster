@@ -18,7 +18,7 @@ const Products = ({ cat, filters, sort }) => {
 
             try {
 
-                const response = await axios.get('http://127.0.0.1:8000/api/lots/',
+                const response = await axios.get('http://130.193.40.81:8000/api/lots/',
                     {
                         headers: {
                             'Authorization': `Bearer ${JSON.parse(localStorage.getItem("userData")).accessToken}`,

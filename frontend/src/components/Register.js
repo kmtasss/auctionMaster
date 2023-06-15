@@ -3,7 +3,7 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "../api/axios";
 import './register.css';
-import registerLogo from '../images/logotype.svg'
+import registerLogo from '../images/logotype.png'
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
 const REGISTER_URL = '/register';
@@ -18,8 +18,8 @@ const Register = () => {
     const [userFocus, setUserFocus] = useState(false);
 
     const [password, setPassword] = useState('');
-    const [validPwd, setValidPwd] = useState(false);
-    // const [pwdFocus, setPwdFocus] = useState(false);
+    const [validPwd, setValidPwd] = useState('');
+    const [pwdFocus, setPwdFocus] = useState(false);
 
     const [matchPwd, setMatchPwd] = useState('');
     const [validMatch, setValidMatch] = useState(false);
@@ -51,7 +51,7 @@ const Register = () => {
         // const v1 = USER_REGEX.test(email);
         const v2 = PWD_REGEX.test(password);
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/register/users/',
+            const response = await axios.post('http://130.193.40.81:8000/api/register/users/',
                 JSON.stringify({ username, password }),
                 {
                     headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'http://localhost:3000'},
@@ -70,11 +70,11 @@ const Register = () => {
             setMatchPwd('');
         } catch (err) {
             if (!err?.response) {
-                setErrMsg('No Server Response');
+                setErrMsg('Нет ответа сервера');
             } else if (err.response?.status === 409) {
-                setErrMsg('Username Taken');
+                setErrMsg('Имя пользователя занято');
             } else {
-                setErrMsg('Registration Failed')
+                setErrMsg('Регистрация не удалась')
             }
         }
     }
@@ -83,7 +83,7 @@ const Register = () => {
         // if button enabled with JS hack
         // const v1 = USER_REGEX.test(email);
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/lots',
+            const response = await axios.get('http://130.193.40.81:8000/api/lots',
                 {
                     headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'http://localhost:3000' },
                     withCredentials: true,
@@ -103,11 +103,11 @@ const Register = () => {
         } catch (err) {
             if (!err?.response) {
                 console.log(!err.response);
-                setErrMsg('No Server Response');
+                setErrMsg('Нет ответа сервера');
             } else if (err.response?.status === 409) {
-                setErrMsg('Username Taken');
+                setErrMsg('Имя пользователя занято');
             } else {
-                setErrMsg('Registration Failed')
+                setErrMsg('Регистрация не удалась')
             }
         }
     }
@@ -125,7 +125,7 @@ const Register = () => {
             ) : (
                 <section className="register_section">
                     <div className="register_logo">
-                        <img className="registerLogo" src={registerLogo} alt='logo'/>
+                        <img style={{width:'150px', height: '150px'}} className="registerLogo" src={registerLogo} alt='logo'/>
                     </div>
                     <h1 className="register_title">Зарегистрироваться в UDV store</h1>
                         <div className="card register_card">
@@ -134,7 +134,7 @@ const Register = () => {
                         <input className="register_input"
                             type="text"
                             id="username"
-                               placeholder="Корпоративная почта"
+                               placeholder="Логин"
                             ref={userRef}
                             autoComplete="off"
                             onChange={(e) => setUsername(e.target.value)}
@@ -145,11 +145,11 @@ const Register = () => {
                             // onFocus={() => setUserFocus(true)}
                             // onBlur={() => setUserFocus(false)}
                         />
-                        <p id="uidnote">
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            Корпоративный email адрес.<br/>
-                            Должен содержать почтовый домен @ussc.ru
-                        </p>
+                        {/*<p id="uidnote">*/}
+                        {/*    <FontAwesomeIcon icon={faInfoCircle} />*/}
+                        {/*    Корпоративный email адрес.<br/>*/}
+                        {/*    Должен содержать почтовый домен @ussc.ru*/}
+                        {/*</p>*/}
 
 
                         <label htmlFor="password">
@@ -165,8 +165,8 @@ const Register = () => {
                             required
                             aria-invalid={validPwd ? "false" : "true"}
                             aria-describedby="pwdnote"
-                            // onFocus={() => setPwdFocus(true)}
-                            // onBlur={() => setPwdFocus(false)}
+                            onFocus={() => setPwdFocus(true)}
+                            onBlur={() => setPwdFocus(false)}
                         />
                         <p id="pwdnote" className={!validPwd ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
@@ -188,8 +188,8 @@ const Register = () => {
                             required
                             aria-invalid={validMatch ? "false" : "true"}
                             aria-describedby="confirmnote"
-                            // onFocus={() => setMatchFocus(true)}
-                            // onBlur={() => setMatchFocus(false)}
+                            onFocus={() => setMatchFocus(true)}
+                            onBlur={() => setMatchFocus(false)}
                         />
                         <p id="confirmnote" className={!validMatch ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />

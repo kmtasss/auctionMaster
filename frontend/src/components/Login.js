@@ -3,7 +3,7 @@ import useAuth from '../hooks/useAuth';
 import './login.css';
 import axios from "../api/axios";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import registerLogo from '../images/logotype.svg'
+import registerLogo from '../images/logotype.png'
 
 const Login = () => {
     const {setAuth,login} = useAuth();
@@ -31,7 +31,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/token/',
+            const response = await axios.post('http://130.193.40.81:8000/api/token/',
                 JSON.stringify({ username, password }),
                 {
 
@@ -72,7 +72,7 @@ const Login = () => {
     return (
                 <section className="register_section">
                     <div className="register_logo">
-                        <img className="registerLogo" src={registerLogo} alt='logo'/>
+                        <img style={{width:'150px', height: '150px'}} className="registerLogo" src={registerLogo} alt='logo'/>
                     </div>
                     <div className="card">
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
@@ -80,7 +80,7 @@ const Login = () => {
                     <form className="login_form" onSubmit={handleSubmit}>
                         <input className='login_input'
                             type="text"
-                               placeholder="Корпоративная почта"
+                               placeholder="Логин"
                             id="username"
                             ref={emailRef}
                             autoComplete="off"
